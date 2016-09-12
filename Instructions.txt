@@ -1,0 +1,42 @@
+Developer Code Test
+ 
+All client and server side code can be written in a language of your choice (PHP, NodeJS, Java, .NET, etc…) Frameworks are allowed, though commenting your logic is encouraged.
+ 
+Instructions:
+ 
+Create a compact website that contains a grid/table to display information (columns headers: street, city, state, zip), an HTML form with 3 input fields (street, city, state) and 1 submit button. The input fields needs to accept a U.S. address (e.g. 1600 Amphitheatre Parkway, Mountain View, CA.) Once the user has provided an address and clicked submit, an AJAX request should be made to a server-side file. This file should accept the user's address input and make an external call to ONE of the provided APIs to validate the location (see example APIs below.) The API should respond with a validated address and a zip code. Store the user's inputted address and the API response in a database of your choosing (PostgreSQL or MySQL preferred.)
+ 
+Once your script has returned from your AJAX call, append the validated address to your grid/table. The "Zip" column should contain the recently acquired zip code you received after validating the provided address.
+ 
+Extras:
+ 
+- Provide access to test code through GitHub/Bitbucket
+- Provide access to working example of your code
+- Caching
+	Cache the API request/response such that if the same address is requested a 2nd time, no external API call is required to get the validated address data.
+	OR
+	Implement a more elaborate caching technique: The address provided/searched will be different then the address returned by the API. Define a schema similar to the schema below:
+ 
+	searched_address1
+	searched_city
+	searched_state
+	searched_zip
+ 
+	validated_address1
+	validated_city
+	validated_state
+	validated_zip
+ 
+	This implementation allows for different search addresses to pair with one response.
+- Use a Table Plugin (ex: DataTables) to beautify your grid.
+ 
+APIs
+	SmartyStreets: https://smartystreets.com/free-address-verification
+	Example call:
+	https://api.smartystreets.com/street-address?auth-id=YOUR_ID&auth-token=YOUR_TOKEN&street=1600+amphitheatre+pkwy&city=mountain+view&state=CA
+ 
+	or
+ 
+	Google Maps: https://developers.google.com/maps/documentation/geocoding/intro
+	Example call:
+	https://maps.googleapis.com/maps/api/geocode/xml?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyAuVomf7gL__hc2dBd-HHRUy8P_XFy0wBQ
