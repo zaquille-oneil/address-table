@@ -44,7 +44,7 @@ app.get('/get/:street/:city/:state', function(request, response) {
          str += chunk;
       });
       res.on('end', function() {
-//BIG BOX INCOMING
+         //error checking and response to client.
          var confirmedAddress = {"street":''};
          var addressValues = JSON.parse(str)
 
@@ -107,13 +107,7 @@ app.get('/get/:street/:city/:state', function(request, response) {
       	}
       });
    }
-   //console.log(url);
    https.request(url, callback).end();
-   //logic to confirm its a correct address
-   //database
-   //return to client, zip and proper address
-   //console.log(xml);
-   //response.end(); 
 });
 
 app.get('/', function(req,res) {
