@@ -14,15 +14,14 @@ $('form').on('submit', function(e) {
 		method: 'GET',
 		url: '/get/' + address[0] + '/' + address[1] + '/' + address[2]
 	}).success(function(data) {
-		//on a successful request, parse and save the data
-		var parsedData = JSON.parse(data);
-
 		//error flag received from server.
 		if (data == 'ERROR') {
 			$('#quote-response').html('Invalid address!');
 		}
 		//otherwise, alter HTML and create a new row with the correct input as data.
 		else {
+			//on a successful request, parse and save the data
+			var parsedData = JSON.parse(data);
 			$('#quote-response').html('');
 			$('#row-zone').append(
 				'<tr><td>'+parsedData.street+
