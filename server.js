@@ -10,15 +10,15 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
    host: 'localhost',
    user: 'root',
-   password: '********',
+   password: 'Blast0!se',
    database: 'addresses'
 });
 connection.connect(function(err) {
    if(!err) {
-      console.log("Database is connected ... nn");
+      console.log("Database is connected ... ");
    }
    else {
-      console.log("Error coneccting database ... nn");
+      console.log("Error connecting database ... ");
    }
 });
 //get request on street city and state input
@@ -33,7 +33,6 @@ app.get('/get/:street/:city/:state', function(request, response) {
    }
    if (!isNaN(addr[0]) || !isNaN(addr[1]) || !isNaN(addr[2])) {
       errFlag = 1;
-      console.log('received a number input for street');
    }
    //api code here
    //https://maps.googleapis.com/maps/api/geocode/xml?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyAuVomf7gL__hc2dBd-HHRUy8P_XFy0wBQ
@@ -44,11 +43,10 @@ app.get('/get/:street/:city/:state', function(request, response) {
          str += chunk;
       });
       res.on('end', function() {
-         //error checking and response to client.
+//BIG BOX INCOMING
          var confirmedAddress = {"street":''};
          var addressValues = JSON.parse(str)
-
-         if (!addressValues["results"][0]){
+         if (addressValues["results"][0] == null){
             errFlag = 1;
          }
          else {
@@ -59,7 +57,7 @@ app.get('/get/:street/:city/:state', function(request, response) {
                   break;
                }
                else if (addressValues["results"][0]["address_components"][i]["types"][0] == "street_number") {
-                	confirmedAddress.street = addressValues["results"][0]["address_components"][i]["long_name"];
+                  confirmedAddress.street = addressValues["results"][0]["address_components"][i]["long_name"];
                }
                else if (addressValues["results"][0]["address_components"][i]["types"][0] == "route"){
                   confirmedAddress.street +=  ' ' + addressValues["results"][0]["address_components"][i]["short_name"];
@@ -78,12 +76,12 @@ app.get('/get/:street/:city/:state', function(request, response) {
          if (confirmedAddress.street == null || confirmedAddress.city == null || confirmedAddress.state == null || confirmedAddress.zip == null) {
             errFlag = 1;
          }
-         else if (addr[1].toLowerCase() !== confirmedAddress.city.toLowerCase() || addr[2].toLowerCase() !== confirmedAddress.state.toLowerCase()) {
-         	errFlag = 1;
+         else if (addr[1].toLowerCase() !== confirmedAddress.city.toLowerCase().replace(/\s/g, '') || addr[2].toLowerCase() !== confirmedAddress.state.toLowerCase()) {
+            errFlag = 1;
          }
 
    //
-         else if (errFlag == 1) {
+         if (errFlag == 1) {
             response.end('ERROR');
          }
          else {
@@ -102,12 +100,18 @@ app.get('/get/:street/:city/:state', function(request, response) {
                   else
                      console.log('Error while performing query.', newAddress);
             });
-         	console.log(confirmedAddress);
+            console.log(confirmedAddress);
             response.end(JSON.stringify(confirmedAddress));
-      	}
+         }
       });
    }
+   //console.log(url);
    https.request(url, callback).end();
+   //logic to confirm its a correct address
+   //database
+   //return to client, zip and proper address
+   //console.log(xml);
+   //response.end(); 
 });
 
 app.get('/', function(req,res) {
